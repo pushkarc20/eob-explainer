@@ -1,0 +1,18 @@
+# Python
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Secrets and local config: NEVER commit
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Downloaded CMS data (terms of use not yet confirmed; never commit)
+data/
+
+# OS / editor
+.DS_Store
