@@ -28,7 +28,7 @@ A mismatch means "double-check", not "error": insurers report amounts differentl
 | Code | Severity | Fires when | Why it's worth asking | Deliberately does NOT claim |
 |---|---|---|---|---|
 | `possible_duplicate_line` | question | Same code + same day + same billed amount nets to 2 or more after reversals | A repeated entry would be worth confirming | That it is a billing error. Two units or modifiers can look identical. |
-| `high_patient_share` | info or question | Patient share of allowed >= 50% and responsibility >= $50. Info if itemized deductible/copay/coinsurance covers >= 90% of it | A large share is often legitimate (deductible) but worth understanding | That the share is wrong |
+| `high_patient_share` | info or question | Patient share of the covered allowed amount (any non-covered amount is excluded, since it has its own flag) >= 50% and responsibility (same basis) >= $50. Info if itemized deductible/copay/coinsurance covers >= 90% of it | A large share is often legitimate (deductible) but worth understanding | That the share is wrong |
 | `unitemized_patient_amount` | question | Reported responsibility exceeds itemized parts (deductible, copay, coinsurance, non-covered) by more than $1, and at least one part is itemized | The EOB does not explain all of the balance | That the balance is wrong |
 | `noncovered_amount` | question | Non-covered amount > 0 | Patients can ask why, and whether appeal or recoding is possible | That the denial was wrong |
 | `claim_has_reversals` | info | Any line has a negative billed amount | Explains why lines look odd; helps compare with earlier statements | What changed |
@@ -42,3 +42,9 @@ A mismatch means "double-check", not "error": insurers report amounts differentl
 - Network status (in/out of network) is not flagged yet.
 - Only amount categories seen in CARIN examples or verified in the CARIN code system are interpreted;
   anything else is kept under `other` with a warning.
+
+## Changelog
+
+- Step 4: `high_patient_share` now excludes non-covered amounts from the share calculation. Found while
+  writing the gold set: a claim with $300 not covered raised both the non-covered flag and the
+  large-share flag, which was redundant and gave misleading advice.

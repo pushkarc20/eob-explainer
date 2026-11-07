@@ -167,3 +167,23 @@ def test_wording_is_safe_and_always_says_who_to_ask():
     for flag in analysis.flags:
         ask = flag.ask.lower()
         assert "insurer" in ask or "provider" in ask
+
+
+def test_noncovered_amount_is_excluded_from_the_share_calculation():
+    eob = make_eob(totals=AmountSet(
+        eligible=Decimal(450), benefit=Decimal(120), copay=Decimal(30),
+        noncovered=Decimal(300), member_liability=Decimal(330),
+    ))
+    assert codes(eob) == ["noncovered_amount"]
+
+
+def test_fully_denied_claim_gets_only_the_noncovered_flag():
+    eob = make_eob(totals=AmountSet(
+        eligible=Decimal(300), benefit=Decimal(0), noncovered=Decimal(300), member_liability=Decimal(300),
+    ))
+    assert codes(eob) == ["noncovered_amount"]
+
+
+def test_share_of_the_covered_part_can_still_be_flagged():
+    eob = make_eob(totals=AmountSet(eligible=Decimal(500), noncovered=Decimal(100), member_liability=Decimal(300)))
+    assert "high_patient_share" in codes(eob)

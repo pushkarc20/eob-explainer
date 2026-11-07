@@ -92,7 +92,14 @@ def _duplicate_flags(eob: EobSummary) -> list[Flag]:
 def _share_flag(money: MoneyView, th: Thresholds) -> Flag | None:
     owed = money.patient_responsibility.value
     allowed = money.allowed.value
-    if owed is None or allowed is None or allowed <= 0 or owed < th.share_min_dollars:
+    if owed is None or allowed is None:
+        return None
+    # Non-covered amounts have their own flag, so judge the share on the covered part only.
+    noncovered = money.noncovered.value or Decimal(0)
+    if noncovered > 0:
+        owed -= noncovered
+        allowed -= noncovered
+    if allowed <= 0 or owed < th.share_min_dollars:
         return None
     share = owed / allowed
     if share < th.share_threshold:
@@ -109,8 +116,13 @@ def _share_flag(money: MoneyView, th: Thresholds) -> Flag | None:
     ]
     explained = sum((value for _, value in itemized), Decimal(0))
     percent = (share * 100).quantize(Decimal(1))
+    lead = (
+        f"Excluding the {fmt_money(noncovered)} marked as not covered, your"
+        if noncovered > 0
+        else "Your"
+    )
     detail = (
-        f"Your responsibility is {fmt_money(owed)}, about {percent}% of the "
+        f"{lead} responsibility is {fmt_money(owed)}, about {percent}% of the "
         f"{fmt_money(allowed)} allowed amount."
     )
     if itemized:
