@@ -28,6 +28,9 @@ CATEGORY_TO_FIELD = {
     "memberliability": "member_liability",
     "paidtoprovider": "paid_to_provider",
     "paidbypatient": "paid_by_patient",
+    "coinsurance": "coinsurance",
+    "priorpayerpaid": "prior_payer_paid",
+    "paidtopatient": "paid_to_patient",
 }
 
 

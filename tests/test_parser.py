@@ -149,3 +149,16 @@ def test_model_has_no_patient_identity_fields():
 def test_patient_reference_is_not_carried_over():
     eob = load("EOBProfessional1")  # the source file has "patient": {"reference": "Patient/Patient2"}
     assert "Patient2" not in eob.model_dump_json()
+
+
+def test_coinsurance_prior_payer_and_paid_to_patient_are_recognized():
+    eob = parse_eob(minimal(total=[
+        total_entry("coinsurance", 20),
+        total_entry("priorpayerpaid", 5),
+        total_entry("paidtopatient", 1),
+    ]))
+    assert eob.totals.coinsurance == Decimal(20)
+    assert eob.totals.prior_payer_paid == Decimal(5)
+    assert eob.totals.paid_to_patient == Decimal(1)
+    assert eob.totals.other == {}
+    assert eob.parse_warnings == []

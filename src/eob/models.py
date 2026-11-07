@@ -30,6 +30,9 @@ class AmountSet(BaseModel):
     member_liability: Decimal | None = None
     paid_to_provider: Decimal | None = None
     paid_by_patient: Decimal | None = None
+    coinsurance: Decimal | None = None
+    prior_payer_paid: Decimal | None = None
+    paid_to_patient: Decimal | None = None
     other: dict[str, Decimal] = Field(default_factory=dict)  # categories not recognized yet
 
     def is_empty(self) -> bool:
