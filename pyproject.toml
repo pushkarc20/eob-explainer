@@ -13,6 +13,7 @@ license-files = ["LICENSE"]
 dependencies = [
   "pydantic>=2",
   "python-dotenv",
+  "presidio-analyzer",
 ]
 
 [project.optional-dependencies]

@@ -40,7 +40,7 @@ class Flag(BaseModel):
     line_sequences: list[int] = Field(default_factory=list)
 
 
-def _nice_date(day: date) -> str:
+def nice_date(day: date) -> str:
     return f"{day:%b} {day.day}, {day.year}"
 
 
@@ -76,7 +76,7 @@ def _duplicate_flags(eob: EobSummary) -> list[Flag]:
             severity="question",
             title="The same service appears more than once on the same day",
             detail=(
-                f"Service code {code} on {_nice_date(day)} appears {count} times at "
+                f"Service code {code} on {nice_date(day)} appears {count} times at "
                 f"{fmt_money(unit)} each, after any reversals are netted out "
                 f"(line items {_seq_text(sequences)})."
             ),
