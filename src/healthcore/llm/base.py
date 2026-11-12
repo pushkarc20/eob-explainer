@@ -3,6 +3,10 @@ from dataclasses import dataclass
 from typing import Protocol
 
 
+class LLMError(RuntimeError):
+    """A model call failed. Messages must never contain document content."""
+
+
 @dataclass(frozen=True)
 class LLMResult:
     text: str

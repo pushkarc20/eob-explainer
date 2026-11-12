@@ -64,7 +64,7 @@ def render_text(explanation: Explanation, disclaimer: str) -> str:
         lines += ["", "WORTH ASKING ABOUT"]
         for note in explanation.flag_notes:
             lines.append(f"  - {note.explanation}")
-            lines.append(f"      Ask: {note.question}")
+            lines.append(f"      What you can do: {note.question}")
     if explanation.not_reported:
         lines += ["", "NOT STATED ON THIS EOB"]
         lines += [f"  - {item}" for item in explanation.not_reported]

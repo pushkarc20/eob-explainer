@@ -14,6 +14,7 @@ dependencies = [
   "pydantic>=2",
   "python-dotenv",
   "presidio-analyzer",
+  "anthropic",
 ]
 
 [project.optional-dependencies]
