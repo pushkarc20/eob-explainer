@@ -56,7 +56,7 @@ Respond with ONLY one JSON object, with no other text, using exactly these keys:
 Include one flag_notes entry for each distinct flag code in the JSON, and none if there are no flags."""
 
 PROMPTS = {"v1": PROMPT_V1, "v2": PROMPT_V2}
-DEFAULT_PROMPT_VERSION = "v1"  # switched only when the evaluation shows a newer version is better
+DEFAULT_PROMPT_VERSION = "v2"  # switched only when the evaluation shows a newer version is better
 SYSTEM_PROMPT = PROMPTS[DEFAULT_PROMPT_VERSION]  # kept for older imports
 PROMPT_VERSION = DEFAULT_PROMPT_VERSION
 

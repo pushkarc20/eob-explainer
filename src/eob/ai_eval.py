@@ -255,9 +255,20 @@ def _pct(part: int, whole: int) -> str:
     return "n/a" if not whole else f"{part / whole:.0%}"
 
 
+def _review_priority(run: dict[str, Any]) -> tuple[int, int]:
+    """Worst first: lowest judge faithfulness, then most unsupported claims."""
+    judge = run["judge"]
+    if not judge:
+        return (0, 0)
+    return (judge["faithfulness"], -len(judge["unsupported_claims"]))
+
+
+MAX_REVIEW_PER_CONFIG = 10
+
+
 def _review_notes(run_file: dict[str, Any]) -> list[str]:
     notes = []
-    for run in run_file["runs"]:
+    for run in sorted(run_file["runs"], key=_review_priority):
         reasons = []
         if run_file["kind"] == "claude" and run["source"] == "template":
             reasons.append("fell back to the built-in explanation (" + ", ".join(run["problems"]) + ")")
@@ -329,8 +340,8 @@ def format_report(run_files: list[dict[str, Any]]) -> str:
             lines.append(f"Why {s['config']} answers were rejected: " + ", ".join(f"{c} x{n}" for c, n in ordered) + ".")
     lines.append("")
 
-    notes = [note for run_file in run_files for note in _review_notes(run_file)]
-    lines += ["## Cases to review", ""] + (notes[:30] or ["- none"]) + [""]
+    notes = [note for run_file in run_files for note in _review_notes(run_file)[:MAX_REVIEW_PER_CONFIG]]
+    lines += ["## Cases to review (worst first, up to 10 per configuration)", ""] + (notes or ["- none"]) + [""]
     lines += [
         "## What this measures, and what it does not",
         "",

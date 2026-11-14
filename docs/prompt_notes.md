@@ -48,3 +48,34 @@ Adopt v2 only if, against v1 on the same 25 cases and the fixed harness:
 4. judge key point drops by no more than 0.2;
 5. there are no planted-name leaks and no overclaiming phrases.
 One run per configuration is noisy, so a result close to a threshold is inconclusive and not a pass.
+
+## Outcome of the v1 vs v2 evaluation (25 gold cases, one run each, judge j1)
+
+| Criterion | v1 | v2 | Result |
+|---|---|---|---|
+| 1. Passed code checks on first try (need 24 or more of 25) | 25 | 24 (1 retry, 0 fallbacks) | Pass, exactly at the threshold |
+| 2. Faithfulness no lower than v1 | 4.20 | 4.32 | Pass |
+| 3. Concision improves by 0.4 or more | 3.16 | 4.00 | Pass (+0.84) |
+| 4. Key point drops by 0.2 or less | 4.20 | 4.08 | Pass (-0.12) |
+| 5. No leaks, no overclaiming | 0 and 0 | 0 leaks in 51 requests, 0 | Pass |
+
+Decision: v2 is now the default prompt (DEFAULT_PROMPT_VERSION = "v2"). v1 is kept for comparison.
+
+Other measurements
+- Unsupported claims found by the judge: 38 (v1) to 26 (v2). Reading grade 5.5 to 5.8. Mean tokens in/out 1417/706 to 1866/505.
+- v2 is cheaper and faster: $0.0099 to $0.0088 per explanation, 6.4 s to 4.2 s on average.
+- Template baseline (after the 9b fixes): faithfulness 4.52, key point 3.20, concision 3.88, reading grade 6.7, unsupported claims 11.
+  Claude's advantage is the key point (about 4.1 against 3.2); the template is slightly more faithful.
+- Noise estimate: v1 ran in both 9a and 9b. Judge means differed by 0.08 or less, so the concision gain and the drop in
+  unsupported claims are well outside the noise; the faithfulness gain (+0.12) and key-point dip (-0.12) are not clearly so.
+- The hypothesis that the template's "In short:" sentence would raise its key-point score was not supported
+  (3.16 to 3.20, within noise).
+
+Limitations and follow-ups
+- The 25 gold cases were both my development set and my test set. I wrote v2's rules after reading v1's failures on
+  them, so part of the gain may be fit to those cases. A held-out set of new cases is the right check.
+- Criterion 1 passed with no margin (24 of 25), so it is weak evidence on its own.
+- Harness bug found and fixed: the "Cases to review" list was capped at 30 notes overall, so the last configuration (v2)
+  was hidden. It is now worst-first, up to 10 per configuration.
+- Backlog for a possible v3 or template fix: for a large-share flag that the EOB already explains as deductible or
+  coinsurance, the fixed question ("how much is deductible, copay or coinsurance?") reads oddly; the judge flagged it.

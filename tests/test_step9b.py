@@ -63,9 +63,9 @@ def test_the_verified_answer_is_kept_in_placeholder_form_for_the_judge(detector)
     assert fallback.placeholder_explanation is None
 
 
-def test_prompt_versions_are_registered_and_the_default_is_still_v1():
+def test_prompt_versions_are_registered_and_v2_is_the_default():
     assert set(PROMPTS) == {"v1", "v2"}
-    assert DEFAULT_PROMPT_VERSION == "v1"
+    assert DEFAULT_PROMPT_VERSION == "v2"
     assert "paid or payable" in get_system_prompt("v1")  # v1 is kept exactly as first evaluated
     assert "Do not say what a service code means" in get_system_prompt("v2")
     assert "never swap them" in get_system_prompt("v2")
