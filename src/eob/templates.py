@@ -22,6 +22,11 @@ def template_explanation(eob: EobSummary, analysis: Analysis) -> Explanation:
     what = f"This is a summary of one {kind}claim with {count} line item{'s' if count != 1 else ''}."
     if eob.provider_display:
         what += f" The provider listed is {eob.provider_display}."
+    paid, owed = money.plan_paid.value, money.patient_responsibility.value
+    if paid is not None and owed is not None:
+        what += f" In short: the plan reports a payment of {fmt_money(paid)}, and the EOB says you owe {fmt_money(owed)}."
+    elif paid is not None:
+        what += f" In short: the plan reports a payment of {fmt_money(paid)}, and this EOB does not state what you owe."
 
     owed_meaning = (
         "Calculated from the deductible, copay and coinsurance listed on this EOB."
@@ -31,7 +36,7 @@ def template_explanation(eob: EobSummary, analysis: Analysis) -> Explanation:
     points = [
         _point("Billed by the provider", money.billed, "The amount the provider charged."),
         _point("Allowed amount", money.allowed, "The amount the plan treats as eligible for payment."),
-        _point("Paid by your plan", money.plan_paid, "The amount the plan reports as paid or payable."),
+        _point("Paid by your plan", money.plan_paid, "The payment the plan reports."),
         _point("Your responsibility", money.patient_responsibility, owed_meaning),
     ]
 

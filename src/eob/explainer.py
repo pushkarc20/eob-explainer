@@ -13,10 +13,11 @@ from eob.engine import Analysis
 from eob.explanation import Explanation, map_strings
 from eob.models import EobSummary
 from eob.privacy import CloudPayload, PreparedPayload, prepare_cloud_payload
-from eob.prompts import SYSTEM_PROMPT, build_user_message
+from eob.prompts import DEFAULT_PROMPT_VERSION, build_user_message, get_system_prompt
 from eob.templates import template_explanation
 from eob.validate import Problem, validate_explanation
 from healthcore.llm.base import LLMClient, LLMError
+from healthcore.llm.json_reply import extract_json_object
 from healthcore.privacy.detector import PiiDetector, default_detector
 from healthcore.privacy.guard import LeakError, check_outbound
 from healthcore.privacy.pseudonymizer import Pseudonymizer
@@ -36,23 +37,15 @@ class ExplainResult:
     input_tokens: int = 0
     output_tokens: int = 0
     error: str | None = None
-
-
-def _strip_fences(text: str) -> str:
-    cleaned = text.strip()
-    if cleaned.startswith("```"):
-        cleaned = cleaned.split("\n", 1)[1] if "\n" in cleaned else ""
-        cleaned = cleaned.rsplit("```", 1)[0]
-    return cleaned
+    placeholder_explanation: Explanation | None = None  # the verified answer before real values were restored
 
 
 def _parse(text: str) -> Explanation | None:
-    cleaned = _strip_fences(text)
-    start, end = cleaned.find("{"), cleaned.rfind("}")
-    if start == -1 or end <= start:
+    blob = extract_json_object(text)
+    if blob is None:
         return None
     try:
-        return Explanation.model_validate_json(cleaned[start : end + 1])
+        return Explanation.model_validate_json(blob)
     except ValueError:  # pydantic's ValidationError is a ValueError
         return None
 
@@ -74,9 +67,11 @@ def explain(
     detector: PiiDetector | None = None,
     blocked_values: Iterable[str] = (),
     confirm: Callable[[PreparedPayload], bool] | None = None,
+    prompt_version: str = DEFAULT_PROMPT_VERSION,
 ) -> ExplainResult:
     """`confirm` receives the exact payload that will be sent; returning False cancels before any request."""
     detector = detector or default_detector()
+    system_prompt = get_system_prompt(prompt_version)
     fallback = template_explanation(eob, analysis)
     try:
         prepared = prepare_cloud_payload(eob, analysis, pseudonymizer, detector, blocked_values)
@@ -92,13 +87,13 @@ def explain(
 
     for _ in range(MAX_ATTEMPTS):
         try:
-            check_outbound(SYSTEM_PROMPT + "\n" + user, pseudonymizer, detector)
+            check_outbound(system_prompt + "\n" + user, pseudonymizer, detector)
         except LeakError:
             codes = ("leak_guard_blocked",)
             break
         attempts += 1
         try:
-            result = client.complete(system=SYSTEM_PROMPT, user=user, max_tokens=MAX_TOKENS)
+            result = client.complete(system=system_prompt, user=user, max_tokens=MAX_TOKENS)
         except LLMError as error:
             return ExplainResult(
                 fallback, "template", attempts, ("api_error",), model, input_tokens, output_tokens, str(error)
@@ -110,7 +105,9 @@ def explain(
         explanation, problems = _check(result.text, prepared.payload, pseudonymizer, detector)
         if explanation is not None and not problems:
             restored = map_strings(explanation, pseudonymizer.restore)
-            return ExplainResult(restored, "ai", attempts, (), model, input_tokens, output_tokens)
+            return ExplainResult(
+                restored, "ai", attempts, (), model, input_tokens, output_tokens, None, explanation
+            )
         codes = tuple(problem.code for problem in problems)
         user = build_user_message(prepared.json_text, feedback=[problem.message for problem in problems])
 

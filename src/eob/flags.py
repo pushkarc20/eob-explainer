@@ -133,7 +133,7 @@ def _share_flag(money: MoneyView, th: Thresholds) -> Flag | None:
     if explained >= owed * th.explained_fraction:
         severity: Literal["info", "question"] = "info"
         ask = (
-            "A large share is common when a deductible or copay applies. Your insurer can show "
+            "A large share is common when a deductible, copay or coinsurance applies. Your insurer can show "
             "how much of your deductible and out-of-pocket limit has been used."
         )
     else:

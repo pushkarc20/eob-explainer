@@ -6,7 +6,7 @@ tests): every question asks and none concludes; none says a charge is wrong, and
 
 QUESTIONS = {
     "possible_duplicate_line": (
-        "Can you tell me whether these were two separate services or one entry that was repeated, "
+        "Can you tell me whether these were separate services or a repeated entry, "
         "and how each line was processed?"
     ),
     "high_patient_share": (

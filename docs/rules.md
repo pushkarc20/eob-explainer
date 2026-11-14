@@ -48,3 +48,6 @@ A mismatch means "double-check", not "error": insurers report amounts differentl
 - Step 4: `high_patient_share` now excludes non-covered amounts from the share calculation. Found while
   writing the gold set: a claim with $300 not covered raised both the non-covered flag and the
   large-share flag, which was redundant and gave misleading advice.
+- Step 9b: the duplicate-line question no longer says "two" (the AI judge noticed a three-line case); the
+  large-share note names coinsurance; the fallback explanation opens with an "In short:" sentence and no longer
+  says "paid or payable". Judge-input placeholders now resolve consistently when provider and insurer share a name.

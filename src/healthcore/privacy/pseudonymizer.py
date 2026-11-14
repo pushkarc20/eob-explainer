@@ -55,11 +55,10 @@ class Pseudonymizer:
 
     def apply(self, text: str) -> str:
         """Replace every known value (any spelling, any case, whole words only) with its placeholder."""
-        lookup = {
-            spelling.casefold(): placeholder
-            for placeholder, entry in self._entries.items()
-            for spelling in entry.matches
-        }
+        lookup: dict[str, str] = {}
+        for placeholder, entry in self._entries.items():
+            for spelling in entry.matches:
+                lookup.setdefault(spelling.casefold(), placeholder)  # first registration wins
         if not lookup:
             return text
         spellings = sorted(lookup, key=len, reverse=True)  # longest first

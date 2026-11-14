@@ -34,7 +34,7 @@ def _decimal(value: str | None) -> Decimal | None:
         return None
 
 
-def _amounts(text: str) -> set[Decimal]:
+def extract_amounts(text: str) -> set[Decimal]:
     found: set[Decimal] = set()
     for token in (*DOLLAR.findall(text), *BARE_DECIMAL.findall(text)):
         number = _decimal(token.replace(",", ""))
@@ -61,7 +61,7 @@ def allowed_amounts(payload: CloudPayload) -> set[Decimal]:
         values.extend(line.amounts.values())
     allowed = {abs(number) for value in values if (number := _decimal(value)) is not None}
     for text in _grounding_texts(payload):
-        allowed |= _amounts(text)
+        allowed |= extract_amounts(text)
     return allowed
 
 
@@ -77,7 +77,7 @@ def validate_explanation(
     if len(explanation.what_happened.strip()) < 20:
         problems.append(Problem("empty_summary", "Write a 2 to 4 sentence summary in what_happened."))
 
-    bad_amounts = sorted(_amounts(text) - allowed_amounts(payload))
+    bad_amounts = sorted(extract_amounts(text) - allowed_amounts(payload))
     if bad_amounts:
         shown = ", ".join(f"${amount:,.2f}" for amount in bad_amounts)
         problems.append(Problem(
