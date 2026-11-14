@@ -15,6 +15,7 @@ dependencies = [
   "python-dotenv",
   "presidio-analyzer",
   "anthropic",
+  "httpx",
 ]
 
 [project.optional-dependencies]

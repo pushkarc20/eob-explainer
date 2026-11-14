@@ -47,3 +47,18 @@ flowchart LR
   security review, and legal sign-off.
 - The leak guard blocks on patterns. It cannot recognize an arbitrary sensitive sentence.
 - Not yet verified: no logging of document content and no disk writes (Step 10), and a network-isolation check for local mode (Step 10).
+
+## Local mode (Ollama)
+
+Local mode keeps everything on the device. The client enforces this in code, with tests:
+
+- the server address must be loopback (localhost, 127.0.0.1 or ::1); anything else is refused;
+- Ollama "cloud" model tags, which run on Ollama's servers, are refused;
+- system proxy settings are ignored, so local traffic cannot be routed elsewhere.
+
+It runs the same pipeline as cloud mode (placeholders, validator, fallback) so that evaluation compares models, not pipelines.
+No consent prompt is needed because nothing leaves the machine.
+
+Verified: with Wi-Fi switched off, local mode still produces an explanation.
+Not verified: Ollama itself is third-party software and I have not audited its own network behavior (for example
+update checks). A stricter check (running with outbound network blocked and watching connections) is planned for Step 10.
