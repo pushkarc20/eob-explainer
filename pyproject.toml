@@ -16,6 +16,7 @@ dependencies = [
   "presidio-analyzer",
   "anthropic",
   "httpx",
+  "streamlit",
 ]
 
 [project.optional-dependencies]

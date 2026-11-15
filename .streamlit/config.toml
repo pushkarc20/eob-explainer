@@ -1,0 +1,10 @@
+# Privacy-minded defaults for the local demo app.
+[browser]
+gatherUsageStats = false   # do not send usage statistics to Streamlit
+
+[server]
+address = "localhost"      # reachable only from this computer
+maxUploadSize = 1          # megabytes; an EOB file is tiny
+
+[logger]
+level = "warning"
