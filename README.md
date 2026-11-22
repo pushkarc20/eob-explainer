@@ -4,8 +4,6 @@
 
 > Portfolio project. Not medical, legal, or billing advice. It never says a bill is wrong; it helps you ask good questions.
 
-Demo video: _link added when recorded_
-
 ![Explanation tab](docs/images/app-explanation.png)
 ![What will be sent to the cloud model](docs/images/app-payload.png)
 
@@ -182,6 +180,13 @@ Privacy audit: 0 planted-name leaks across all 126 requests to a model in the fi
 - Streamlit keeps an uploaded file in server memory until it is replaced, cleared, or the tab closes; the operating system may swap memory to disk. Neither can be controlled from this project.
 - Cloud mode sends the approved payload to Anthropic.
 - Thresholds (for example "a large share is 50% of the allowed amount and at least $50") are product judgments, configurable, and not medical or legal facts.
+
+### Known issues (planned for v0.2)
+
+- The fixed question for a large patient share ("how much is deductible, copay or coinsurance?") reads oddly when the EOB already itemizes the amount. The judge flagged it; fixing it would change the published evaluation numbers, so it waits for a re-run.
+- The judge flags one-sentence definitions of standard terms as "unsupported", because it does not see the glossary the prompt allows.
+- Prompt v2 passed its first-try criterion exactly at the threshold (24 of 25), and every result is a single run.
+- Local mode (Ollama) has guards and tests but was never evaluated.
 
 ## 12. Run it
 

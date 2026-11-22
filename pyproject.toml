@@ -27,3 +27,8 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[project.urls]
+Homepage = "https://github.com/pushkar1983/eob-explainer"
+Repository = "https://github.com/pushkar1983/eob-explainer"
+Issues = "https://github.com/pushkar1983/eob-explainer/issues"
