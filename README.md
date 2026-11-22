@@ -193,7 +193,7 @@ Privacy audit: 0 planted-name leaks across all 126 requests to a model in the fi
 Requires Python 3.10 to 3.13.
 
 ```bash
-git clone https://github.com/pushkar1983/eob-explainer.git
+git clone https://github.com/pushkarc20/eob-explainer.git
 cd eob-explainer
 python3.13 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"

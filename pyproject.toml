@@ -29,6 +29,6 @@ where = ["src"]
 testpaths = ["tests"]
 
 [project.urls]
-Homepage = "https://github.com/pushkar1983/eob-explainer"
-Repository = "https://github.com/pushkar1983/eob-explainer"
-Issues = "https://github.com/pushkar1983/eob-explainer/issues"
+Homepage = "https://github.com/pushkarc20/eob-explainer"
+Repository = "https://github.com/pushkarc20/eob-explainer"
+Issues = "https://github.com/pushkarc20/eob-explainer/issues"
