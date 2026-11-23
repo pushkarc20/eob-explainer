@@ -1,5 +1,7 @@
 # EOB Explainer
 
+![tests](https://github.com/pushkarc20/eob-explainer/actions/workflows/tests.yml/badge.svg)
+
 **A patient-facing tool that turns a FHIR `ExplanationOfBenefit` into a plain-language explanation, points out questions worth asking, and drafts a message to the insurer. Built privacy-first, on synthetic data only.**
 
 > Portfolio project. Not medical, legal, or billing advice. It never says a bill is wrong; it helps you ask good questions.
