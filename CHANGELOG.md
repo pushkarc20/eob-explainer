@@ -9,7 +9,7 @@ First public version.
 - Explanation: a built-in deterministic version, and Claude (Sonnet 5.5) with prompt v2 behind a code validator, one retry, and a fallback.
 - Privacy layer: placeholders, Presidio scan, fail-closed leak guard, and a consent step that sends only the exact payload you reviewed.
 - Local message drafter with fixed, tested questions.
-- Streamlit app (local only) and command-line scripts.
+- Streamlit app (local only; Deploy button hidden; getting-started guidance) and command-line scripts.
 - Evaluation: 25-case gold set; rules engine 25 of 25; explanation systems compared with an LLM judge, under a pre-registered decision rule.
 - 209 automated tests, including checks that a run writes no files, opens no connections, and logs no identifiers.
 

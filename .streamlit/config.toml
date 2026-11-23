@@ -8,3 +8,7 @@ maxUploadSize = 1          # megabytes; an EOB file is tiny
 
 [logger]
 level = "warning"
+
+[client]
+toolbarMode = "viewer"        # hides Deploy, rerun and other developer options
+showErrorDetails = "type"     # no tracebacks (with file paths) on screen; details still print in the terminal

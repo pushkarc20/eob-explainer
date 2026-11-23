@@ -15,12 +15,24 @@ from eob.settings import estimate_cost
 from healthcore.privacy.guard import LeakError
 from healthcore.privacy.pseudonymizer import Pseudonymizer
 
-st.set_page_config(page_title="EOB Explainer (demo)", page_icon="🧾")
+st.set_page_config(
+    page_title="EOB Explainer (demo)",
+    page_icon="🧾",
+    menu_items={
+        "Get help": "https://github.com/pushkarc20/eob-explainer#readme",
+        "Report a bug": "https://github.com/pushkarc20/eob-explainer/issues",
+        "About": (
+            "EOB Explainer: a demo with synthetic data only. Runs on this computer and stores nothing. "
+            "Not medical, legal, or billing advice. Never post real health data in a bug report."
+        ),
+    },
+)
 
 SAMPLE, UPLOAD = "Sample claim", "Upload a file"
 BUILT_IN = "Built-in explanation (nothing leaves this computer)"
 CLOUD = "Claude, with redaction (you approve what is sent)"
 RESET_KEYS = ("eob_claim", "eob_error", "eob_pseudonymizer", "eob_result", "eob_sends")
+SUGGESTED_SAMPLE = "syn_duplicate_same_day"
 
 
 def esc(text: str) -> str:
@@ -51,6 +63,17 @@ def show_explanation(explanation: Explanation) -> None:
     st.caption(DISCLAIMER)
 
 
+def show_getting_started() -> None:
+    st.markdown(
+        "**New here? Try this in a minute:**\n\n"
+        f"1. In the sidebar, choose the sample `{SUGGESTED_SAMPLE}`.\n"
+        "2. Read the four figures and the **Explanation** tab. Every number comes from code, not from a model.\n"
+        "3. Open **Questions to ask** and **Draft message**. Type a made-up name; it stays on this computer.\n"
+        "4. Optional: switch to **Claude, with redaction**, review exactly what will be sent, then approve it. "
+        "This needs an API key (see the README). Built-in mode works without one."
+    )
+
+
 st.title("EOB Explainer")
 st.caption(
     "Explains an Explanation of Benefits in plain language, points out questions worth asking, "
@@ -70,6 +93,8 @@ with st.sidebar:
         )
         if choice:
             selection = ("sample", choice)
+        else:
+            st.caption(f"New here? Try {SUGGESTED_SAMPLE}.")
     else:
         uploaded = st.file_uploader("FHIR R4 ExplanationOfBenefit (.json)", type=["json"], key="eob_upload")
         if uploaded is not None:
@@ -97,6 +122,10 @@ with st.sidebar:
             st.caption(cloud_note)
         else:
             st.error(cloud_note)
+            st.caption(
+                "To use Claude mode: copy .env.example to .env, add an API key from your Claude Console "
+                "(use a dedicated key with a spend limit), and restart the app. Built-in mode works without it."
+            )
 
     st.divider()
     if st.button("Clear everything", key="eob_clear"):
@@ -111,6 +140,7 @@ if error:
 if claim is None:
     if not error:
         st.info("Choose a sample claim or upload a file in the sidebar to begin.")
+        show_getting_started()
     st.stop()
 
 st.caption("Loaded: " + esc(claim.label))
