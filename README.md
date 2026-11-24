@@ -9,6 +9,8 @@
 ![Explanation tab](docs/images/app-explanation.png)
 ![What will be sent to the cloud model](docs/images/app-payload.png)
 
+**Contents:** [Problem](#1-the-problem) · [Users](#2-who-it-is-for) · [Principles](#3-product-principles) · [MVP](#4-mvp-and-user-stories) · [Cuts](#5-what-i-cut-and-why) · [How it works](#6-how-it-works) · [Safety](#7-safety-guardrails) · [Privacy](#8-privacy-design) · [Evaluation](#9-evaluation) · [Decisions](#10-decisions-and-what-building-it-taught-me) · [Limits](#11-limitations-and-risks) · [Run it](#12-run-it) · [Repo map](#13-repository-map) · [Next](#14-what-is-next) · [Data and licenses](#16-data-sources-licenses-attribution) · [Docs index](docs/README.md)
+
 ## Independence and data statement
 
 - This is a personal learning project, built on personal time and personal equipment.
@@ -184,7 +186,7 @@ Privacy audit: 0 planted-name leaks across all 126 requests to a model in the fi
 - Thresholds (for example "a large share is 50% of the allowed amount and at least $50") are product judgments, configurable, and not medical or legal facts.
 
 ### Known issues (planned for v0.2)
-
+Tracked as GitHub issues under the [v0.2 milestone](https://github.com/pushkarc20/eob-explainer/milestones).
 - The fixed question for a large patient share ("how much is deductible, copay or coinsurance?") reads oddly when the EOB already itemizes the amount. The judge flagged it; fixing it would change the published evaluation numbers, so it waits for a re-run.
 - The judge flags one-sentence definitions of standard terms as "unsupported", because it does not see the glossary the prompt allows.
 - Prompt v2 passed its first-try criterion exactly at the threshold (24 of 25), and every result is a single run.
