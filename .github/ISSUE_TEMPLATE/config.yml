@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security concern
+    url: https://github.com/pushkarc20/eob-explainer/security/policy
+    about: Read SECURITY.md first. Do not post real health data, API keys, or tokens in an issue.
