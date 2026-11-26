@@ -19,7 +19,7 @@ responsibility, because whether the patient owes them depends on the contract.
 ## Consistency checks (neutral wording)
 
 - Line items vs claim total, per category, within $0.01.
-- Allowed amount = plan paid + patient responsibility, when all three are reported.
+- Allowed amount = plan paid + patient responsibility (+ another payer's payment, when one is reported), when the figures are reported.
 
 A mismatch means "double-check", not "error": insurers report amounts differently.
 
@@ -54,3 +54,5 @@ A mismatch means "double-check", not "error": insurers report amounts differentl
 - v0.2: when a large patient share is already explained by itemized deductible, copay or coinsurance (an "info" flag),
   the fixed question asks about the deductible and out-of-pocket limit instead of asking what makes up the amount.
   Flags where nothing is itemized keep the original question.
+- v0.2 (found by the held-out set): the allowed-amount check now counts a prior payer's payment when the EOB reports one.
+  Under standard coordination of benefits the amounts add up; other methods may not, so a mismatch is still a note to double-check.

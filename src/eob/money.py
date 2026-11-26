@@ -159,12 +159,17 @@ def check_consistency(eob: EobSummary, money: MoneyView) -> list[Check]:
     allowed = money.allowed.value
     paid = money.plan_paid.value
     owed = money.patient_responsibility.value
+    prior = money.prior_payer_paid.value or Decimal(0)  # another payer's payment counts toward the allowed amount
     if allowed is not None and paid is not None and owed is not None:
-        if abs(allowed - (paid + owed)) <= TOLERANCE:
+        if abs(allowed - (prior + paid + owed)) <= TOLERANCE:
             checks.append(Check(
                 name="allowed_equals_paid_plus_owed",
                 status="ok",
-                message="The allowed amount equals what the plan paid plus the patient responsibility.",
+                message=(
+                    "The allowed amount equals what the plan paid, plus what another payer paid, plus the patient responsibility."
+                    if prior
+                    else "The allowed amount equals what the plan paid plus the patient responsibility."
+                ),
             ))
         else:
             checks.append(Check(
@@ -172,7 +177,9 @@ def check_consistency(eob: EobSummary, money: MoneyView) -> list[Check]:
                 status="mismatch",
                 message=(
                     f"The allowed amount ({fmt_money(allowed)}) does not equal what the plan paid "
-                    f"({fmt_money(paid)}) plus the patient responsibility ({fmt_money(owed)}). "
+                    f"({fmt_money(paid)})"
+                    + (f", plus what another payer paid ({fmt_money(prior)})," if prior else "")
+                    + f" plus the patient responsibility ({fmt_money(owed)}). "
                     "Insurers report these amounts differently, so this is a reason to "
                     "double-check, not proof of a problem."
                 ),

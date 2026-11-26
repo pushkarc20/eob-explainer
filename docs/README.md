@@ -11,3 +11,4 @@
 | [eval_ai_results.md](eval_ai_results.md) | Explanation-system evaluation: built-in vs Claude, with the judge's review list |
 | `eval/runs/`, `eval/archive/9a/` | Raw per-case results behind those reports (synthetic data only) |
 | [eval_heldout_engine_before_fix.md](eval_heldout_engine_before_fix.md) | Rules-engine results on the held-out set before any v0.2 engine change (14 of 15) |
+| [eval_heldout_engine.md](eval_heldout_engine.md) | Rules-engine results on the held-out set after the documented fix (15 of 15) |
