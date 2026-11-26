@@ -113,7 +113,8 @@ def cloud_status() -> tuple[bool, str]:
         settings = load_cloud_settings()
     except MissingKeyError as error:
         return False, str(error)
-    return True, f"Model: {settings.model} (effort: {settings.effort})"
+    effort = settings.effort or "model default"
+    return True, f"Model: {settings.model} (effort: {effort})"
 
 
 def make_cloud_client() -> LLMClient:

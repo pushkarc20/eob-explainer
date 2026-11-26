@@ -72,7 +72,7 @@ def main() -> None:
 
         def confirm(prepared: PreparedPayload) -> bool:
             print("=== WHAT WILL BE SENT TO CLAUDE ===")
-            print(f"Model: {settings.model} (effort: {settings.effort})")
+            print(f"Model: {settings.model} (effort: {settings.effort or 'model default'})")
             print(json.dumps(json.loads(prepared.json_text), indent=2))
             print("\nAlso sent: a fixed instruction prompt (identical for every claim; it contains no claim data).")
             print("If the first answer fails verification, one retry sends the same data plus a list of problems.")

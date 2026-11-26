@@ -28,6 +28,15 @@ class CloudSettings:
     effort: str | None
 
 
+def _parse_effort(value: str | None) -> str | None:
+    text = (value or "").strip().lower()
+    if not text:
+        return DEFAULT_EFFORT
+    if text in ("default", "none", "off"):
+        return None  # leave the effort parameter out and use the model's own default
+    return text
+
+
 def load_cloud_settings(env_file: Path | None = DEFAULT_ENV_FILE) -> CloudSettings:
     if env_file is not None and env_file.exists():
         load_dotenv(env_file)
@@ -35,7 +44,7 @@ def load_cloud_settings(env_file: Path | None = DEFAULT_ENV_FILE) -> CloudSettin
         raise MissingKeyError("ANTHROPIC_API_KEY is not set. Put it in the .env file (see .env.example).")
     return CloudSettings(
         model=os.environ.get("EOB_CLOUD_MODEL") or DEFAULT_MODEL,
-        effort=os.environ.get("EOB_CLOUD_EFFORT") or DEFAULT_EFFORT,
+        effort=_parse_effort(os.environ.get("EOB_CLOUD_EFFORT")),
     )
 
 
