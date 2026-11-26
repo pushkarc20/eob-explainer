@@ -15,10 +15,10 @@ from healthcore.privacy.detector import PiiDetector
 from healthcore.privacy.guard import LeakError, check_outbound
 from healthcore.privacy.pseudonymizer import Pseudonymizer
 
-JUDGE_PROMPT_VERSION = "j1"
+JUDGE_PROMPT_VERSION = "j2"
 JUDGE_MAX_TOKENS = 4000
 
-JUDGE_SYSTEM = """You are a careful reviewer of plain-language explanations of a health insurance Explanation of Benefits (EOB).
+JUDGE_SYSTEM_J1 = """You are a careful reviewer of plain-language explanations of a health insurance Explanation of Benefits (EOB).
 You are given: (1) the structured facts the explanation was written from, as JSON; (2) the one key point a good explanation must convey; (3) the explanation to review. Placeholders such as [PROVIDER_1] stand for real names and are fine.
 
 Score each criterion from 1 to 5 (5 is excellent):
@@ -30,6 +30,18 @@ Score each criterion from 1 to 5 (5 is excellent):
 
 List each unsupported claim you find as a short string in unsupported_claims (an empty list if there are none).
 Respond with ONLY a JSON object: {"faithfulness": int, "key_point": int, "clarity": int, "tone": int, "concision": int, "unsupported_claims": [string]}"""
+
+
+# j2 = j1 plus one rule: short general definitions of standard billing terms are allowed.
+GLOSSARY_RULE = (
+    "A one-sentence, general definition of a standard billing term (such as deductible, copay, coinsurance, "
+    "allowed amount, or out-of-pocket maximum) is allowed and is NOT an unsupported claim, as long as it does "
+    "not state a fact about this particular claim that the facts do not support.\n"
+)
+_ANCHOR = "List each unsupported claim"
+assert _ANCHOR in JUDGE_SYSTEM_J1
+JUDGE_SYSTEM = JUDGE_SYSTEM_J1.replace(_ANCHOR, GLOSSARY_RULE + _ANCHOR)
+JUDGE_PROMPTS = {"j1": JUDGE_SYSTEM_J1, "j2": JUDGE_SYSTEM}
 
 
 class JudgeScores(BaseModel):

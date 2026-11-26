@@ -79,3 +79,10 @@ Limitations and follow-ups
   was hidden. It is now worst-first, up to 10 per configuration.
 - Backlog for a possible v3 or template fix: for a large-share flag that the EOB already explains as deductible or
   coinsurance, the fixed question ("how much is deductible, copay or coinsurance?") reads oddly; the judge flagged it.
+
+## Judge j2 (v0.2)
+
+j1 flagged one-sentence definitions of standard billing terms as unsupported, because it never saw that prompt v2 allows
+them. j2 is j1 plus one rule: a short, general definition of a standard billing term is allowed, provided it states no
+fact about the claim that the data does not support. j1's text is kept in the code (`JUDGE_SYSTEM_J1`). The j1 results
+are archived (docs/eval/archive/9b/) before the v0.2 runs. Every v0.2 score is a j2 score, and j1 and j2 numbers are not comparable.
