@@ -4,29 +4,29 @@
 Held-out set: 15 synthetic claims, frozen before any model ran on them.
 Judge: claude-sonnet-5-5.
 
-| Metric | template | sonnet-medium-v1 | sonnet-medium-v2 |
-|---|---|---|---|
-| Model / effort | built-in | claude-sonnet-5-5 / medium | claude-sonnet-5-5 / medium |
-| Prompt version | n/a | v1 | v2 |
-| Cases | 15 | 15 | 15 |
-| AI answer passed all checks on the first try | n/a | 15 of 15 | 14 of 15 |
-| AI answer passed after one retry | n/a | 0 | 1 |
-| Fell back to the built-in explanation | n/a | 0 | 0 |
-| Expected money figures shown | 58 of 58 (100%) | 58 of 58 (100%) | 58 of 58 (100%) |
-| Cases with overclaiming phrases | 0 | 0 | 0 |
-| Reading grade, lower is easier (target 8 or less) | 7.0 | 5.8 | 6.0 |
-| Cases scored by the judge | 15 of 15 | 15 of 15 | 15 of 15 |
-| Judge: faithfulness (1 to 5) | 4.80 | 4.07 | 4.33 |
-| Judge: key point (1 to 5) | 3.13 | 4.33 | 4.00 |
-| Judge: clarity (1 to 5) | 4.07 | 4.07 | 4.33 |
-| Judge: tone and safety (1 to 5) | 4.93 | 4.87 | 4.73 |
-| Judge: concision (1 to 5) | 3.93 | 3.00 | 4.00 |
-| Judge: faithfulness, AI-written answers only | n/a | 4.07 | 4.33 |
-| Unsupported claims the judge found | 2 | 26 | 13 |
-| Outbound requests / planted-name leaks | 15 / 0 | 30 / 0 | 31 / 0 |
-| Mean tokens in / out | n/a | 1465 / 715 | 1948 / 516 |
-| Mean cost per explanation | n/a | $0.0101 | $0.0091 |
-| Mean / slowest seconds per explanation | 0.0 / 0.0 | 5.6 / 9.0 | 4.0 / 6.7 |
+| Metric | template | sonnet-medium-v1 | sonnet-medium-v2 | sonnet-low-v2 | haiku-v2 |
+|---|---|---|---|---|---|
+| Model / effort | built-in | claude-sonnet-5-5 / medium | claude-sonnet-5-5 / medium | claude-sonnet-5-5 / low | claude-haiku-5-5 / default |
+| Prompt version | n/a | v1 | v2 | v2 | v2 |
+| Cases | 15 | 15 | 15 | 15 | 15 |
+| AI answer passed all checks on the first try | n/a | 15 of 15 | 14 of 15 | 14 of 15 | 15 of 15 |
+| AI answer passed after one retry | n/a | 0 | 1 | 1 | 0 |
+| Fell back to the built-in explanation | n/a | 0 | 0 | 0 | 0 |
+| Expected money figures shown | 58 of 58 (100%) | 58 of 58 (100%) | 58 of 58 (100%) | 58 of 58 (100%) | 58 of 58 (100%) |
+| Cases with overclaiming phrases | 0 | 0 | 0 | 0 | 0 |
+| Reading grade, lower is easier (target 8 or less) | 7.0 | 5.8 | 6.0 | 6.1 | 6.3 |
+| Cases scored by the judge | 15 of 15 | 15 of 15 | 15 of 15 | 15 of 15 | 15 of 15 |
+| Judge: faithfulness (1 to 5) | 4.80 | 4.07 | 4.33 | 4.33 | 4.53 |
+| Judge: key point (1 to 5) | 3.13 | 4.33 | 4.00 | 4.00 | 3.73 |
+| Judge: clarity (1 to 5) | 4.07 | 4.07 | 4.33 | 4.33 | 4.20 |
+| Judge: tone and safety (1 to 5) | 4.93 | 4.87 | 4.73 | 4.73 | 4.80 |
+| Judge: concision (1 to 5) | 3.93 | 3.00 | 4.00 | 3.93 | 3.93 |
+| Judge: faithfulness, AI-written answers only | n/a | 4.07 | 4.33 | 4.33 | 4.53 |
+| Unsupported claims the judge found | 2 | 26 | 13 | 15 | 11 |
+| Outbound requests / planted-name leaks | 15 / 0 | 30 / 0 | 31 / 0 | 31 / 0 | 30 / 0 |
+| Mean tokens in / out | n/a | 1465 / 715 | 1948 / 516 | 1948 / 508 | 1834 / 1225 |
+| Mean cost per explanation | n/a | $0.0101 | $0.0091 | $0.0090 | $0.0008 |
+| Mean / slowest seconds per explanation | 0.0 / 0.0 | 5.6 / 9.0 | 4.0 / 6.7 | 4.0 / 6.3 | 5.7 / 8.5 |
 
 
 ## Cases to review (worst first, up to 10 per configuration)
@@ -52,6 +52,23 @@ Judge: claude-sonnet-5-5.
 - **sonnet-medium-v2 / ho_09_two_unknown_categories**: judge flagged: "They can ... tell you what has been paid so far" implies the insurer or billing office has information about payments, which the facts do n
 - **sonnet-medium-v2 / ho_11_unitemized_gap_exactly_one_dollar**: judge flagged: States the copay is 'part of your balance' / 'one part of that balance' - the facts list the copay and patient responsibility separately wit
 - **sonnet-medium-v2 / ho_13_reversal_with_deductible**: judge flagged: "The EOB itemizes this amount as the reason for your balance" slightly overstates what the facts say; they only say the EOB itemizes $120 as
+- **sonnet-low-v2 / ho_02_specialist_40pct**: judge flagged: "which is a large share" is the explanation's own characterization, though the flag title says the same; "This is the payment [INSURER_1] reports" and "the amount the plan treats as eligible" are reasonable paraphrases, not strictly unsupported
+- **sonnet-low-v2 / ho_07_twelve_weekly_visits**: judge flagged: The copay line says $15 per line "explains your balance", which is a mild inference but the totals do match; Does not describe visits as weekly; no unsupported claim, but 'different dates' is supported
+- **sonnet-low-v2 / ho_09_two_unknown_categories**: judge flagged: "which explains your balance" implies a causal relationship; the facts only show the copay equals patient responsibility; "the plan treats as eligible" and "payment the plan reports" are fine, but the explanation doesn't mention the parse warnings, so it implies
+- **sonnet-low-v2 / ho_13_reversal_with_deductible**: judge flagged: "They can explain what changed" slightly implies something changed, though the line 2 reversal supports this; "Lines 1 and 3 show the same amounts as each other" is true, but the explanation never says the claim nets to one charge
+- **sonnet-low-v2 / ho_14_noncovered_twice**: judge flagged: "Allowed: This is the amount the plan treats as eligible" is a loose definition, and it sits oddly next to the fact that nothing was covered; "it matches the amount you owe" implies the not-covered amount is the reason for the patient responsibility. The facts show the two figures 
+- **sonnet-low-v2 / ho_01_er_itemized**: judge flagged: "They can also tell you whether any payments you made have been counted" goes beyond the facts, though it is a mild general suggestion.
+- **sonnet-low-v2 / ho_03_secondary_payer**: judge flagged: "The EOB shows another payer paid this amount earlier" - the facts do not state that the payment came earlier in time, only that a prior pay
+- **sonnet-low-v2 / ho_10_share_at_threshold**: judge flagged: "The deductible, copay and coinsurance amounts that make up what you owe" implies the $50 is made up of those components, but the facts do n
+- **sonnet-low-v2 / ho_11_unitemized_gap_exactly_one_dollar**: judge flagged: "This copay is listed as part of the claim" is vague but supported; no clear unsupported claim, though 'what the plan says you owe' slightly
+- **sonnet-low-v2 / ho_15_totals_disagree**: judge flagged: The claim total lists a $50.00 copay, which matches the amount you owe — a comparison not stated in the facts, though numerically true
+- **haiku-v2 / ho_01_er_itemized**: judge flagged: The deductible line says it is "as itemized on line 1"; the facts show the deductible only on line 1, which is consistent, but "goes toward ; The explanation never states that the $1,120 plan payment is out of the $1,900 allowed, so the link between the two figures is only implied.
+- **haiku-v2 / ho_09_two_unknown_categories**: judge flagged: The EOB lists this $46.00 copay as 'the itemized amount that makes up what you owe' is slightly interpretive, though consistent with the fac; Says patient paid amount 'shows whether any of the $46.00 is still due' which is a mild inference not stated in the facts
+- **haiku-v2 / ho_12_unitemized_gap_over_one_dollar**: judge flagged: The explanation never states the $1.01 amount and says only "the rest" is not broken down, which is vague but not wrong.; The phrase "breaks down $40.00 ... as a copay, deductible, coinsurance, or non-covered amount" is slightly misleading, since the EOB lists i
+- **haiku-v2 / ho_14_noncovered_twice**: judge flagged: "Allowed: ... the amount the plan treats as eligible for payment" sits oddly beside the fully not-covered amount; the facts do not say the p; "which explains why the plan paid nothing" asserts a causal link that the facts do not state explicitly
+- **haiku-v2 / ho_03_secondary_payer**: judge flagged: "the data shows this matches a $60.00 copay" is a mild framing; the facts only list a $60 copay and a $60 patient responsibility, they do no
+- **haiku-v2 / ho_06_uneven_cents**: judge flagged: "The EOB shows a $22.22 copay, which is the reason for the amount you owe" states a causal relationship; the facts show the copay equals pat
+- **haiku-v2 / ho_11_unitemized_gap_exactly_one_dollar**: judge flagged: "The amount the plan treats as eligible for payment" is a reasonable gloss of allowed/eligible, but not strictly stated.
 
 ## What this measures, and what it does not
 
