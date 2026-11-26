@@ -68,7 +68,8 @@ def outcome_a(criteria: list[Criterion]) -> str:
     failed = sum(1 for item in criteria if not item.passed)
     if failed >= 2:
         return f"{failed} criteria failed: the default returns to v1, and the README must say the v2 gain did not generalize."
-    return f"{failed} criteria failed: v2 stays the default."
+    noun = "criterion" if failed == 1 else "criteria"
+    return f"{failed} {noun} failed: v2 stays the default."
 
 
 def rule_b(baseline_file: dict[str, Any], candidate_file: dict[str, Any]) -> list[Criterion]:

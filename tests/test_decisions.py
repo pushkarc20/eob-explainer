@@ -101,3 +101,8 @@ def test_without_any_runs_the_report_says_not_run_yet(tmp_path):
     text = build_decisions(tmp_path / "a", tmp_path / "b")
     assert text.count("Not run yet.") == 1
     assert text.count("Not run on both sets yet.") == 2
+
+def test_the_outcome_line_uses_the_right_singular_and_plural():
+    v1 = fake_file("sonnet-medium-v1", fake_runs(15, concision=3))
+    one = fake_file("sonnet-medium-v2", fake_runs(15, concision=4, first_try=13))
+    assert outcome_a(rule_a(v1, one)).startswith("1 criterion failed:")

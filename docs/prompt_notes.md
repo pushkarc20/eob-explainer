@@ -86,3 +86,10 @@ j1 flagged one-sentence definitions of standard billing terms as unsupported, be
 them. j2 is j1 plus one rule: a short, general definition of a standard billing term is allowed, provided it states no
 fact about the claim that the data does not support. j1's text is kept in the code (`JUDGE_SYSTEM_J1`). The j1 results
 are archived (docs/eval/archive/9b/) before the v0.2 runs. Every v0.2 score is a j2 score, and j1 and j2 numbers are not comparable.
+
+## v0.2 human spot-check
+
+The author read the Sonnet (medium, v2) and Haiku (v2) answers side by side for three claims (syn_duplicate_same_day,
+syn_noncovered_service, carin_professional2). Both read fine; Sonnet seemed slightly better. This is informal: three
+claims and one reader, so it supports "Haiku is acceptable" without being a quality measurement. It is consistent with the
+judge, which scored Haiku's key point lower (3.88 against 4.03, both sets pooled).
