@@ -24,3 +24,15 @@ QUESTIONS = {
 }
 
 GENERIC_QUESTION = "Can you explain this item?"
+
+# Used when the EOB already itemizes the amount (an "info" flag): asking what makes up the amount would be redundant.
+INFO_QUESTIONS = {
+    "high_patient_share": "Can you confirm how much of my deductible and out-of-pocket limit has been used so far?",
+}
+
+
+def question_for(code: str, severity: str = "question") -> str:
+    """The fixed question for a flag. An 'info' flag can have different wording from a 'question' flag."""
+    if severity == "info" and code in INFO_QUESTIONS:
+        return INFO_QUESTIONS[code]
+    return QUESTIONS.get(code, GENERIC_QUESTION)

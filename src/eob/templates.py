@@ -4,7 +4,7 @@ from eob.engine import Analysis
 from eob.explanation import Explanation, FlagNote, MoneyPoint
 from eob.models import EobSummary
 from eob.money import Figure, fmt_money
-from eob.questions import QUESTIONS
+from eob.questions import question_for
 
 NOT_STATED = "This EOB does not state this amount."
 
@@ -47,7 +47,7 @@ def template_explanation(eob: EobSummary, analysis: Analysis) -> Explanation:
         FlagNote(
             flag_code=code,
             explanation=" ".join(flag.detail for flag in flags),
-            question=QUESTIONS.get(code, flags[0].ask),
+            question=question_for(code, flags[0].severity),
         )
         for code, flags in grouped.items()
     ]

@@ -10,7 +10,7 @@ from eob.engine import Analysis
 from eob.flags import nice_date
 from eob.models import EobSummary
 from eob.money import MoneyView, fmt_money
-from eob.questions import GENERIC_QUESTION, QUESTIONS
+from eob.questions import question_for
 
 CLAIM_NUMBER = "[CLAIM NUMBER]"
 PROVIDER_NAME = "[PROVIDER NAME]"
@@ -88,7 +88,7 @@ def draft_message(eob: EobSummary, analysis: Analysis, member: MemberDetails | N
     subject = f"Question about claim {claim}" + (f" (service {service_dates})" if service_dates else "")
 
     asked = [flag for flag in analysis.flags if flag.severity == "question"]
-    items = [f"{flag.detail} {QUESTIONS.get(flag.code, GENERIC_QUESTION)}" for flag in asked]
+    items = [f"{flag.detail} {question_for(flag.code, flag.severity)}" for flag in asked]
     owed = analysis.money.patient_responsibility.value
     items.append(CONFIRM_BALANCE.format(amount=fmt_money(owed)) if owed is not None else BALANCE_NOT_STATED)
 

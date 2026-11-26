@@ -9,7 +9,7 @@ import streamlit as st
 
 from eob import app_logic
 from eob.explanation import Explanation
-from eob.questions import GENERIC_QUESTION, QUESTIONS
+from eob.questions import question_for
 from eob.safety import DISCLAIMER
 from eob.settings import estimate_cost
 from healthcore.privacy.guard import LeakError
@@ -199,7 +199,7 @@ with tab_questions:
         st.success("Nothing on this EOB stood out as worth questioning.")
     for flag in flags:
         box = st.warning if flag.severity == "question" else st.info
-        question = QUESTIONS.get(flag.code, GENERIC_QUESTION)
+        question = question_for(flag.code, flag.severity)
         box(f"**{esc(flag.title)}**\n\n{esc(flag.detail)}\n\n**Question to ask:** {esc(question)}")
     mismatches = [check for check in claim.analysis.checks if check.status == "mismatch"]
     if mismatches:

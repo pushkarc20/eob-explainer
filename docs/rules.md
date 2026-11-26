@@ -51,3 +51,6 @@ A mismatch means "double-check", not "error": insurers report amounts differentl
 - Step 9b: the duplicate-line question no longer says "two" (the AI judge noticed a three-line case); the
   large-share note names coinsurance; the fallback explanation opens with an "In short:" sentence and no longer
   says "paid or payable". Judge-input placeholders now resolve consistently when provider and insurer share a name.
+- v0.2: when a large patient share is already explained by itemized deductible, copay or coinsurance (an "info" flag),
+  the fixed question asks about the deductible and out-of-pocket limit instead of asking what makes up the amount.
+  Flags where nothing is itemized keep the original question.
