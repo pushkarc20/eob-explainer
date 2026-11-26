@@ -13,4 +13,5 @@
 | [eval_heldout_engine_before_fix.md](eval_heldout_engine_before_fix.md) | Rules-engine results on the held-out set before any v0.2 engine change (14 of 15) |
 | [eval_heldout_engine.md](eval_heldout_engine.md) | Rules-engine results on the held-out set after the documented fix (15 of 15) |
 | [eval_ai_heldout.md](eval_ai_heldout.md) | Explanation-system results on the held-out set (judge j2) |
-| [v0.2_decisions.md](v0.2_decisions.md) | The pre-registered v0.2 rules applied mechanically to the saved runs |
+| [v0.2_decisions.md](v0.2_decisions.md) | The v0.2 decision rules applied mechanically to the saved runs |
+| [v0.2_plan.md](v0.2_plan.md) | The v0.2 scope and decision rules, with an exact commit timeline of what git proves |

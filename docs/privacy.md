@@ -62,3 +62,8 @@ No consent prompt is needed because nothing leaves the machine.
 Verified: with Wi-Fi switched off, local mode still produces an explanation.
 Not verified: Ollama itself is third-party software and I have not audited its own network behavior (for example
 update checks). A stricter check (running with outbound network blocked and watching connections) is planned for Step 10.
+
+## Model retention check (2026-11-26)
+
+The models that require 30-day retention are the Fable and Mythos families. Claude Sonnet 5.5 (the default) and
+Claude Haiku 5.5 (the recommended low-cost option) are not among them, according to Anthropic's data-retention documentation.

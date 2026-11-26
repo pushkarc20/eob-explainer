@@ -1,6 +1,6 @@
-"""Apply the pre-registered v0.2 decision rules (docs/v0.2_plan.md) mechanically to saved evaluation runs.
+"""Apply the v0.2 decision rules (documented in docs/v0.2_plan.md) mechanically to saved evaluation runs.
 
-The thresholds below are copied from the plan, which was committed before any held-out case existed.
+The thresholds below were committed before any model ran on the held-out claims (see the timeline in docs/v0.2_plan.md).
 Comparisons are one-sided: a candidate that is better than the baseline passes.
 """
 import json
@@ -115,7 +115,7 @@ def build_decisions(gold_runs: Path, heldout_runs: Path) -> str:
     lines = [
         "# v0.2 decisions",
         "",
-        "The pre-registered rules in docs/v0.2_plan.md, applied mechanically by scripts/apply_v02_rules.py.",
+        "The v0.2 decision rules (docs/v0.2_plan.md), applied mechanically by scripts/apply_v02_rules.py.",
         f"Every score is from judge {JUDGE_VERSION}. Generated {date.today().isoformat()}.",
         "",
         "## Rule A: does prompt v2 stay the default? (held-out set, v2 against v1)",
