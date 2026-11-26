@@ -177,8 +177,10 @@ def run_case(
     )
 
 
-def save_run(config: EvalConfig, runs: list[CaseRun], judge_model: str | None) -> Path:
-    RUNS_DIR.mkdir(parents=True, exist_ok=True)
+def save_run(
+    config: EvalConfig, runs: list[CaseRun], judge_model: str | None, directory: Path = RUNS_DIR
+) -> Path:
+    directory.mkdir(parents=True, exist_ok=True)
     data = {
         "config": config.name,
         "kind": config.kind,
@@ -190,7 +192,7 @@ def save_run(config: EvalConfig, runs: list[CaseRun], judge_model: str | None) -
         "date": date.today().isoformat(),
         "runs": [asdict(run) for run in runs],
     }
-    path = RUNS_DIR / f"{config.name}.json"
+    path = directory / f"{config.name}.json"
     path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
     return path
 
